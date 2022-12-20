@@ -1,15 +1,31 @@
-variable "access_key" {}
+variable "access_key" {
+  default = ""
+}
 
-variable "secret_key" {}
+variable "secret_key" {
+  default = ""
+}
 
-variable "region" {}
+variable "region" {
+  default = ""
+}
 
-variable "environment" {}
+variable "environment" {
+  default = ""
+}
 
-variable "tags" {}
+variable "tags" {
+  default = ""
+}
 
-variable "instance_count" {}
+variable "instance_count" {
+  default = ""
+}
 
-variable "instance_type" {}
+variable "instance_type" {
+  default = ""
+}
 
-variable "ami" {}
+variable "ami" {
+  default = ""
+}
