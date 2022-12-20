@@ -1,18 +1,10 @@
-variable "access_key" {
-  default = "AKIA6FNRTBBTOT2CTI4L"
-}
+variable "access_key" {}
 
-variable "secret_key" {
-  default = "OpkaksMWf+VgVQ/6T1j6q0mQ5TSHxCO7bvz3k/lv"
-}
+variable "secret_key" {}
 
-variable "region" {
-  default = "us-west-1"
-}
+variable "region" {}
 
-variable "environment" {
-  default = "prod"
-}
+variable "environment" {}
 
 variable "tags" {}
 
