@@ -14,18 +14,10 @@ variable "environment" {
   default = "prod"
 }
 
-variable "tags" {
-  default = ""
-}
+variable "tags" {}
 
-variable "instance_count" {
-  default = ""
-}
+variable "instance_count" {}
 
-variable "instance_type" {
-  default = ""
-}
+variable "instance_type" {}
 
-variable "ami" {
-  default = ""
-}
+variable "ami" {}
