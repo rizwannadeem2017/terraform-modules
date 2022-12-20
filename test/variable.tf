@@ -1,12 +1,10 @@
-# variable "access_key" {}
+variable "access_key" {}
 
-# variable "secret_key" {}
+variable "secret_key" {}
 
-# variable "region" {
-#   default = us-east-1
-# }
+variable "region" {}
 
-# variable "environment" {}
+variable "environment" {}
 
 variable "tags" {
   default = ""
