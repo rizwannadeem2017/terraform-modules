@@ -42,7 +42,7 @@ resource "aws_instance" "ubuntu-instance" {
   key_name                    = var.key_name
   associate_public_ip_address = true
   subnet_id                   = element(var.subnets, count.index)
-  vpc_security_group_ids      = ["${aws_security_group.ubuntu-sg[0].id}"]
+  vpc_security_group_ids      = [aws_security_group.ubuntu-sg[0].id]
   #iam_instance_profile        = var.instance_profile
 
   root_block_device {
