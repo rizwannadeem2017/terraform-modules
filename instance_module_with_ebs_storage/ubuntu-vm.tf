@@ -67,7 +67,7 @@ resource "aws_instance" "ubuntu-instance" {
     host        = coalesce(self.public_ip, self.private_ip)
     type        = "ssh"
     user        = "ubuntu"
-    agent       = true
+    agent       = false
     private_key = file("rsa_id")
     timeout     = "3"
   }
