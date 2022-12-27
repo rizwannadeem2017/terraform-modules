@@ -68,7 +68,7 @@ resource "aws_instance" "ubuntu-instance" {
     type        = "ssh"
     user        = "ubuntu"
     agent       = false
-    private_key = var.private_key
+    private_key = file(auth_key)
     timeout     = "3"
   }
 
