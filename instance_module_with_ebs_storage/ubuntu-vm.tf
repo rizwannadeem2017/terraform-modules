@@ -28,7 +28,7 @@ resource "aws_security_group" "ubuntu-sg" {
 
 #### Key_pair 
 resource "aws_key_pair" "key-pair" {
-  key_name   = "rsa_id"
+  key_name   = "auth_key"
   public_key = var.ssh_public_key
   tags       = merge(map("Name", "ubuntu-kp-${var.environment}"), var.tags)
 }
