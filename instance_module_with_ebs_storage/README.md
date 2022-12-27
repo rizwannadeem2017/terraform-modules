@@ -9,12 +9,12 @@ Set the workspaces on terraform cloud based upon the envoirnment. let say you ha
 
 Set required variables on each workspace on Terraform Cloud for example see below: becuase these values are sensitive so not to pass within this terraform modules and terraform workspace repo. 
 
-![alt text](https://github.com/rizwannadeem2017/terraform-modules/blob/main/image1.jpg?raw=true)
-
 * Region 
 * Envoirnment
 * Access_key
 * Secret_key 
+
+![alt text](https://github.com/rizwannadeem2017/terraform-modules/blob/main/image1.jpg?raw=true)
 
 Terraform workspace repo can be look at: 
 
