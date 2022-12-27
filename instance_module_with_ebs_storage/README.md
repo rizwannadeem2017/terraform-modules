@@ -1,24 +1,5 @@
-# Terraform-Modules
+# Terraform-Module - ec2_instace_module_with_ebs_storage
 
-These modules are setup for terraform cloud based deployment and multi account deployment. 
+In this module you can create EC2_Intances with EBS Volume attached. 
 
-To use these modules you must have terraform cloud free account atleast. 
-
-Set the workspaces on terraform cloud based upon the envoirnment. let say you have seperate account for staging and seperate account for prodcution so you have to create seperate workspaces with envoirnment tags. see the below image.
-
-
-Set required variables on each workspace on Terraform Cloud for example see below: becuase these values are sensitive so not to pass within this terraform modules and terraform workspace repo. 
-
-* Region 
-* Envoirnment
-* Access_key
-* Secret_key 
-
-![alt text](https://github.com/rizwannadeem2017/terraform-modules/blob/main/image1.jpg?raw=true)
-
-Terraform workspace repo can be look at: 
-
-https://github.com/rizwannadeem2017/terraform-infra.git
-
-
-Contact me at: linkedin.com/in/rizwannadeem007/
+storage_setup.sh script will format the new disk, create "/app-data" folder, mount the disk to this directory and add into fstab entry. 
