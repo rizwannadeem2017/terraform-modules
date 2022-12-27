@@ -23,7 +23,7 @@ resource "aws_security_group" "ubuntu-sg" {
     cidr_blocks = ["0.0.0.0/0"]
   }
   count = var.instance_count
-  tags  = merge(map("Name", "ubuntu-sg${var.environment}"), var.tags)
+  tags  = merge(map("Name", "ubuntu-sg-${var.environment}"), var.tags)
 }
 
 #### Key_pair 
@@ -95,8 +95,8 @@ resource "aws_volume_attachment" "ubuntu-volume-attachment" {
 
   lifecycle {
     ignore_changes = [
-      "instance_id",
-      "volume_id",
+      instance_id,
+      volume_id,
     ]
   }
 
