@@ -110,7 +110,7 @@ resource "aws_volume_attachment" "ubuntu-volume-attachment" {
 
   # Prepare the EBS volume for storage
   provisioner "file" {
-    source      = "storage_setup.sh"
+    source      = "${path.module}/storage_setup.sh"
     destination = "/tmp/storage_setup.sh"
   }
 
