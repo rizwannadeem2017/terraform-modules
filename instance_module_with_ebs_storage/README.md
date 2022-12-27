@@ -11,10 +11,10 @@ Set required variables on each workspace on Terraform Cloud for example see belo
 
 ![alt text](https://github.com/rizwannadeem2017/terraform-modules/blob/main/image1.jpg?raw=true)
 
-Region 
-Envoirnment
-Access_key
-Secret_key 
+* Region 
+* Envoirnment
+* Access_key
+* Secret_key 
 
 Terraform workspace repo can be look at: 
 
