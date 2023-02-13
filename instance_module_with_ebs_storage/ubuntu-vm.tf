@@ -54,28 +54,28 @@ resource "aws_instance" "ubuntu-instance" {
   volume_tags = merge(map("Name", "ubuntu-vm-${format("%02d", count.index + 1)}"), var.tags)
 
 
-  provisioner "remote-exec" {
-    inline = [
-      "sudo apt update -y",
-      "sudo apt install nginx -y",
-      "sudo systemctl enable nginx",
-      "sudo systemctl start nginx",
-    ]
-  }
+  # provisioner "remote-exec" {
+  #   inline = [
+  #     "sudo apt update -y",
+  #     "sudo apt install nginx -y",
+  #     "sudo systemctl enable nginx",
+  #     "sudo systemctl start nginx",
+  #   ]
+  # }
 
-  connection {
-    host        = coalesce(self.public_ip, self.private_ip)
-    type        = "ssh"
-    user        = "ubuntu"
-    agent       = false
-    private_key = file("${path.module}/auth_key")
-    timeout     = "3"
-  }
+  # connection {
+  #   host        = coalesce(self.public_ip, self.private_ip)
+  #   type        = "ssh"
+  #   user        = "ubuntu"
+  #   agent       = false
+  #   private_key = file("${path.module}/auth_key")
+  #   timeout     = "3"
+  # }
 
-  lifecycle {
-    ignore_changes        = [ami]
-    create_before_destroy = true
-  }
+  # lifecycle {
+  #   ignore_changes        = [ami]
+  #   create_before_destroy = true
+  # }
 }
 #### Create Elastic block volume 
 resource "aws_ebs_volume" "ubuntu-volume" {
@@ -99,27 +99,135 @@ resource "aws_volume_attachment" "ubuntu-volume-attachment" {
       volume_id,
     ]
   }
+}
 
-  connection {
-    type        = "ssh"
-    user        = var.ssh_user
-    host        = element(aws_instance.ubuntu-instance.*.public_ip, count.index)
-    agent       = false
-    private_key = var.private_key
-  }
+##############################################################################################################################
+###################################### Test Purpose #################################
+##############################################################################################################################
+#### Create Elastic block volume 
+resource "aws_ebs_volume" "ubuntu-volume1" {
+  count             = var.instance_count
+  availability_zone = element(aws_instance.ubuntu-instance.*.availability_zone, count.index)
+  size              = var.ebs_volume_size
+  type              = var.ebs_volume_type
+  tags              = merge(map("Name", "ubuntu-ebs-volume1-${format("%02d", count.index + 1)}"), var.tags)
+}
 
-  # Prepare the EBS volume for storage
-  provisioner "file" {
-    source      = "${path.module}/storage_setup.sh"
-    destination = "/tmp/storage_setup.sh"
-  }
+#### Create Elastic block volume attachment
+resource "aws_volume_attachment" "ubuntu-volume-attachment1" {
+  count       = var.instance_count
+  device_name = "/dev/xvdx"
+  volume_id   = element(aws_ebs_volume.ubuntu-volume.*.id, count.index)
+  instance_id = element(aws_instance.ubuntu-instance.*.id, count.index)
 
-  provisioner "remote-exec" {
-    inline = [
-      "sudo chmod +x /tmp/storage_setup.sh",
-      "sudo /tmp/storage_setup.sh",
+  lifecycle {
+    ignore_changes = [
+      instance_id,
+      volume_id,
     ]
   }
-
 }
+
+#### Create Elastic block volume 
+resource "aws_ebs_volume" "ubuntu-volume2" {
+  count             = var.instance_count
+  availability_zone = element(aws_instance.ubuntu-instance.*.availability_zone, count.index)
+  size              = var.ebs_volume_size
+  type              = var.ebs_volume_type
+  tags              = merge(map("Name", "ubuntu-ebs-volume2-${format("%02d", count.index + 1)}"), var.tags)
+}
+
+#### Create Elastic block volume attachment
+resource "aws_volume_attachment" "ubuntu-volume-attachment2" {
+  count       = var.instance_count
+  device_name = "/dev/xvdy"
+  volume_id   = element(aws_ebs_volume.ubuntu-volume.*.id, count.index)
+  instance_id = element(aws_instance.ubuntu-instance.*.id, count.index)
+
+  lifecycle {
+    ignore_changes = [
+      instance_id,
+      volume_id,
+    ]
+  }
+}
+
+#### Create Elastic block volume 
+resource "aws_ebs_volume" "ubuntu-volume3" {
+  count             = var.instance_count
+  availability_zone = element(aws_instance.ubuntu-instance.*.availability_zone, count.index)
+  size              = var.ebs_volume_size
+  type              = var.ebs_volume_type
+  tags              = merge(map("Name", "ubuntu-ebs-volume3-${format("%02d", count.index + 1)}"), var.tags)
+}
+
+#### Create Elastic block volume attachment
+resource "aws_volume_attachment" "ubuntu-volume-attachment3" {
+  count       = var.instance_count
+  device_name = "/dev/xvdz"
+  volume_id   = element(aws_ebs_volume.ubuntu-volume.*.id, count.index)
+  instance_id = element(aws_instance.ubuntu-instance.*.id, count.index)
+
+  lifecycle {
+    ignore_changes = [
+      instance_id,
+      volume_id,
+    ]
+  }
+}
+
+#### Create Elastic block volume 
+resource "aws_ebs_volume" "ubuntu-volume4" {
+  count             = var.instance_count
+  availability_zone = element(aws_instance.ubuntu-instance.*.availability_zone, count.index)
+  size              = var.ebs_volume_size
+  type              = var.ebs_volume_type
+  tags              = merge(map("Name", "ubuntu-ebs-volume4-${format("%02d", count.index + 1)}"), var.tags)
+}
+
+#### Create Elastic block volume attachment
+resource "aws_volume_attachment" "ubuntu-volume-attachment4" {
+  count       = var.instance_count
+  device_name = "/dev/xvdl"
+  volume_id   = element(aws_ebs_volume.ubuntu-volume.*.id, count.index)
+  instance_id = element(aws_instance.ubuntu-instance.*.id, count.index)
+
+  lifecycle {
+    ignore_changes = [
+      instance_id,
+      volume_id,
+    ]
+  }
+}
+
+
+
+##############################################################################################################################
+###################################### Test End #################################
+##############################################################################################################################
+
+
+
+# connection {
+#   type        = "ssh"
+#   user        = var.ssh_user
+#   host        = element(aws_instance.ubuntu-instance.*.public_ip, count.index)
+#   agent       = false
+#   private_key = var.private_key
+# }
+
+# # Prepare the EBS volume for storage
+# provisioner "file" {
+#   source      = "${path.module}/storage_setup.sh"
+#   destination = "/tmp/storage_setup.sh"
+# }
+
+# provisioner "remote-exec" {
+#   inline = [
+#     "sudo chmod +x /tmp/storage_setup.sh",
+#     "sudo /tmp/storage_setup.sh",
+#   ]
+# }
+
+# }
 
