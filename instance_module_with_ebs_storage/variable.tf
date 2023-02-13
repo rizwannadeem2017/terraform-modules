@@ -39,5 +39,5 @@ variable "vpc_id" {}
 variable "instance_type" {}
 variable "instance_count" {}
 variable "ebs_block_device" {}
-#variable "staging_ebs_block_device" {}
+variable "staging_ebs_block_device" {}
 variable "ebs_termination" {}
