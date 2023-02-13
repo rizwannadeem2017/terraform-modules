@@ -50,26 +50,29 @@ resource "aws_instance" "ubuntu-instance" {
     volume_size = var.root_block_device_size
   }
 
-  ebs_block_device {
-  device_name           = "/dev/xvdg"
-  volume_type           = var.ebs_volume_type
-  volume_size           = var.ebs_volume_size
-  delete_on_termination = true
+  dynamic "ebs_block_device" {
+    for_each = var.ebs_block_device
+    content {
+      device_name           = ebs_block_device.value.device_name   #"/dev/xvdx"
+      volume_type           = "gp3"
+      volume_size           = ebs_block_device.value.volume_size
+      delete_on_termination = var.ebs_termination
+    }
   }
 
-  ebs_block_device {
-  device_name           = "/dev/xvdx"
-  volume_type           = var.ebs_volume_type
-  volume_size           = var.ebs_volume_size
-  delete_on_termination = true
-  }
+  # ebs_block_device {
+  # device_name           = "/dev/xvdx"
+  # volume_type           = var.ebs_volume_type
+  # volume_size           = var.ebs_volume_size
+  # delete_on_termination = true
+  # }
 
-  ebs_block_device {
-  device_name           = "/dev/xvdy"
-  volume_type           = var.ebs_volume_type
-  volume_size           = var.ebs_volume_size
-  delete_on_termination = true
-  }
+  # ebs_block_device {
+  # device_name           = "/dev/xvdy"
+  # volume_type           = var.ebs_volume_type
+  # volume_size           = var.ebs_volume_size
+  # delete_on_termination = true
+  # }
 
 
   tags        = merge(map("Name", "ubuntu-vm-${format("%02d", count.index + 1)}"), var.tags)

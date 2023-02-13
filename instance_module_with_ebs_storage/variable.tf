@@ -30,11 +30,13 @@ variable "ami" {}
 variable "key_name" {}
 variable "root_block_device_size" {}
 variable "root_block_device_type" {}
-variable "ebs_volume_size" {}
-variable "ebs_volume_type" {}
+# variable "ebs_volume_size" {}
+# variable "ebs_volume_type" {}
 variable "ssh_user" {}
 variable "private_key" {}
 variable "ssh_public_key" {}
 variable "vpc_id" {}
 variable "instance_type" {}
 variable "instance_count" {}
+variable "ebs_block_device" {}
+variable "ebs_termination" {}
