@@ -117,7 +117,7 @@ resource "aws_ebs_volume" "ubuntu-volume1" {
 resource "aws_volume_attachment" "ubuntu-volume-attachment1" {
   count       = var.instance_count
   device_name = "/dev/xvdx"
-  volume_id   = element(aws_ebs_volume.ubuntu-volume.*.id, count.index)
+  volume_id   = element(aws_ebs_volume.ubuntu-volume1.*.id, count.index)
   instance_id = element(aws_instance.ubuntu-instance.*.id, count.index)
 
   lifecycle {
@@ -128,29 +128,29 @@ resource "aws_volume_attachment" "ubuntu-volume-attachment1" {
   }
 }
 
-# #### Create Elastic block volume 
-# resource "aws_ebs_volume" "ubuntu-volume2" {
-#   count             = var.instance_count
-#   availability_zone = element(aws_instance.ubuntu-instance.*.availability_zone, count.index)
-#   size              = var.ebs_volume_size
-#   type              = var.ebs_volume_type
-#   tags              = merge(map("Name", "ubuntu-ebs-volume2-${format("%02d", count.index + 1)}"), var.tags)
-# }
+#### Create Elastic block volume 
+resource "aws_ebs_volume" "ubuntu-volume2" {
+  count             = var.instance_count
+  availability_zone = element(aws_instance.ubuntu-instance.*.availability_zone, count.index)
+  size              = var.ebs_volume_size
+  type              = var.ebs_volume_type
+  tags              = merge(map("Name", "ubuntu-ebs-volume2-${format("%02d", count.index + 1)}"), var.tags)
+}
 
-# #### Create Elastic block volume attachment
-# resource "aws_volume_attachment" "ubuntu-volume-attachment2" {
-#   count       = var.instance_count
-#   device_name = "/dev/xvdy"
-#   volume_id   = element(aws_ebs_volume.ubuntu-volume.*.id, count.index)
-#   instance_id = element(aws_instance.ubuntu-instance.*.id, count.index)
+#### Create Elastic block volume attachment
+resource "aws_volume_attachment" "ubuntu-volume-attachment2" {
+  count       = var.instance_count
+  device_name = "/dev/xvdy"
+  volume_id   = element(aws_ebs_volume.ubuntu-volume2.*.id, count.index)
+  instance_id = element(aws_instance.ubuntu-instance.*.id, count.index)
 
-#   lifecycle {
-#     ignore_changes = [
-#       instance_id,
-#       volume_id,
-#     ]
-#   }
-# }
+  lifecycle {
+    ignore_changes = [
+      instance_id,
+      volume_id,
+    ]
+  }
+}
 
 # #### Create Elastic block volume 
 # resource "aws_ebs_volume" "ubuntu-volume3" {
