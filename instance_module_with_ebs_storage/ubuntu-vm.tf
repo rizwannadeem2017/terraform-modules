@@ -50,6 +50,28 @@ resource "aws_instance" "ubuntu-instance" {
     volume_size = var.root_block_device_size
   }
 
+  ebs_block_device {
+  device_name           = "/dev/xvdg"
+  volume_type           = var.ebs_volume_type
+  volume_size           = var.ebs_volume_size
+  delete_on_termination = true
+  }
+
+  ebs_block_device {
+  device_name           = "/dev/xvdx"
+  volume_type           = var.ebs_volume_type
+  volume_size           = var.ebs_volume_size
+  delete_on_termination = true
+  }
+
+  ebs_block_device {
+  device_name           = "/dev/xvdy"
+  volume_type           = var.ebs_volume_type
+  volume_size           = var.ebs_volume_size
+  delete_on_termination = true
+  }
+
+
   tags        = merge(map("Name", "ubuntu-vm-${format("%02d", count.index + 1)}"), var.tags)
   volume_tags = merge(map("Name", "ubuntu-vm-${format("%02d", count.index + 1)}"), var.tags)
 
@@ -77,128 +99,10 @@ resource "aws_instance" "ubuntu-instance" {
   #   create_before_destroy = true
   # }
 }
-#### Create Elastic block volume 
-resource "aws_ebs_volume" "ubuntu-volume" {
-  count             = var.instance_count
-  availability_zone = element(aws_instance.ubuntu-instance.*.availability_zone, count.index)
-  size              = var.ebs_volume_size
-  type              = var.ebs_volume_type
-  tags              = merge(map("Name", "ubuntu-ebs-volume-${format("%02d", count.index + 1)}"), var.tags)
-}
-
-#### Create Elastic block volume attachment
-resource "aws_volume_attachment" "ubuntu-volume-attachment" {
-  count       = var.instance_count
-  device_name = "/dev/xvdg"
-  volume_id   = element(aws_ebs_volume.ubuntu-volume.*.id, count.index)
-  instance_id = element(aws_instance.ubuntu-instance.*.id, count.index)
-
-  lifecycle {
-    ignore_changes = [
-      instance_id,
-      volume_id,
-    ]
-  }
-}
 
 ##############################################################################################################################
 ###################################### Test Purpose #################################
 ##############################################################################################################################
-#### Create Elastic block volume 
-resource "aws_ebs_volume" "ubuntu-volume1" {
-  count             = var.instance_count
-  availability_zone = element(aws_instance.ubuntu-instance.*.availability_zone, count.index)
-  size              = var.ebs_volume_size
-  type              = var.ebs_volume_type
-  tags              = merge(map("Name", "ubuntu-ebs-volume1-${format("%02d", count.index + 1)}"), var.tags)
-}
-
-#### Create Elastic block volume attachment
-resource "aws_volume_attachment" "ubuntu-volume-attachment1" {
-  count       = var.instance_count
-  device_name = "/dev/xvdx"
-  volume_id   = element(aws_ebs_volume.ubuntu-volume1.*.id, count.index)
-  instance_id = element(aws_instance.ubuntu-instance.*.id, count.index)
-
-  lifecycle {
-    ignore_changes = [
-      instance_id,
-      volume_id,
-    ]
-  }
-}
-
-#### Create Elastic block volume 
-resource "aws_ebs_volume" "ubuntu-volume2" {
-  count             = var.instance_count
-  availability_zone = element(aws_instance.ubuntu-instance.*.availability_zone, count.index)
-  size              = var.ebs_volume_size
-  type              = var.ebs_volume_type
-  tags              = merge(map("Name", "ubuntu-ebs-volume2-${format("%02d", count.index + 1)}"), var.tags)
-}
-
-#### Create Elastic block volume attachment
-resource "aws_volume_attachment" "ubuntu-volume-attachment2" {
-  count       = var.instance_count
-  device_name = "/dev/xvdy"
-  volume_id   = element(aws_ebs_volume.ubuntu-volume2.*.id, count.index)
-  instance_id = element(aws_instance.ubuntu-instance.*.id, count.index)
-
-  lifecycle {
-    ignore_changes = [
-      instance_id,
-      volume_id,
-    ]
-  }
-}
-
-# #### Create Elastic block volume 
-# resource "aws_ebs_volume" "ubuntu-volume3" {
-#   count             = var.instance_count
-#   availability_zone = element(aws_instance.ubuntu-instance.*.availability_zone, count.index)
-#   size              = var.ebs_volume_size
-#   type              = var.ebs_volume_type
-#   tags              = merge(map("Name", "ubuntu-ebs-volume3-${format("%02d", count.index + 1)}"), var.tags)
-# }
-
-# #### Create Elastic block volume attachment
-# resource "aws_volume_attachment" "ubuntu-volume-attachment3" {
-#   count       = var.instance_count
-#   device_name = "/dev/xvdz"
-#   volume_id   = element(aws_ebs_volume.ubuntu-volume.*.id, count.index)
-#   instance_id = element(aws_instance.ubuntu-instance.*.id, count.index)
-
-#   lifecycle {
-#     ignore_changes = [
-#       instance_id,
-#       volume_id,
-#     ]
-#   }
-# }
-
-# #### Create Elastic block volume 
-# resource "aws_ebs_volume" "ubuntu-volume4" {
-#   count             = var.instance_count
-#   availability_zone = element(aws_instance.ubuntu-instance.*.availability_zone, count.index)
-#   size              = var.ebs_volume_size
-#   type              = var.ebs_volume_type
-#   tags              = merge(map("Name", "ubuntu-ebs-volume4-${format("%02d", count.index + 1)}"), var.tags)
-# }
-
-# #### Create Elastic block volume attachment
-# resource "aws_volume_attachment" "ubuntu-volume-attachment4" {
-#   count       = var.instance_count
-#   device_name = "/dev/xvdl"
-#   volume_id   = element(aws_ebs_volume.ubuntu-volume.*.id, count.index)
-#   instance_id = element(aws_instance.ubuntu-instance.*.id, count.index)
-
-#   lifecycle {
-#     ignore_changes = [
-#       instance_id,
-#       volume_id,
-#     ]
-#   }
-# }
 
 
 
