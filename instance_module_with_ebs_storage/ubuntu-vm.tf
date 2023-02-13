@@ -51,21 +51,21 @@ resource "aws_instance" "ubuntu-instance" {
   }
 
   ebs_block_device {
-  device_name           = "/dev/dbq1"
+  device_name           = "/dev/xvdg"
   volume_type           = var.ebs_volume_type
   volume_size           = var.ebs_volume_size
   delete_on_termination = true
   }
 
   ebs_block_device {
-  device_name           = "/dev/dbq2"
+  device_name           = "/dev/xvdx"
   volume_type           = var.ebs_volume_type
   volume_size           = var.ebs_volume_size
   delete_on_termination = true
   }
 
   ebs_block_device {
-  device_name           = "/dev/dbq3"
+  device_name           = "/dev/xvdy"
   volume_type           = var.ebs_volume_type
   volume_size           = var.ebs_volume_size
   delete_on_termination = true
