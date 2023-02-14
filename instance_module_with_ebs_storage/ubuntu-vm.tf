@@ -51,7 +51,7 @@ resource "aws_instance" "ubuntu-instance" {
   }
 
   dynamic "ebs_block_device" {
-    for_each = var.ebs_block_device != "" ? [var.staging_ebs_block_device] : []
+    for_each = var.environment == "prod" ? var.ebs_block_device : var.staging_ebs_block_device 
     content {
       device_name           = ebs_block_device.value.device_name #"/dev/xvdx"
       volume_type           = "gp3"
