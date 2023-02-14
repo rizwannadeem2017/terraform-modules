@@ -53,67 +53,40 @@ resource "aws_instance" "ubuntu-instance" {
   dynamic "ebs_block_device" {
     for_each = var.environment == "prod" ? var.ebs_block_device : var.staging_ebs_block_device 
     content {
-      device_name           = ebs_block_device.value.device_name #"/dev/xvdx"
+      device_name           = ebs_block_device.value.device_name
       volume_type           = "gp3"
       volume_size           = ebs_block_device.value.volume_size
       delete_on_termination = var.ebs_termination
     }
   }
 
-  # ebs_block_device {
-  # device_name           = "/dev/xvdx"
-  # volume_type           = var.ebs_volume_type
-  # volume_size           = var.ebs_volume_size
-  # delete_on_termination = true
-  # }
-
-  # ebs_block_device {
-  # device_name           = "/dev/xvdy"
-  # volume_type           = var.ebs_volume_type
-  # volume_size           = var.ebs_volume_size
-  # delete_on_termination = true
-  # }
+  tags        = merge(map("Name", "ubuntu-vm-${var.environment}-${format("%02d", count.index + 1)}"), var.tags)
+  volume_tags = merge(map("Name", "ubuntu-vm-${var.environment}-${format("%02d", count.index + 1)}"), var.tags)
 
 
-  tags        = merge(map("Name", "ubuntu-vm-${format("%02d", count.index + 1)}"), var.tags)
-  volume_tags = merge(map("Name", "ubuntu-vm-${format("%02d", count.index + 1)}"), var.tags)
+  provisioner "remote-exec" {
+    inline = [
+      "sudo apt update -y",
+      "sudo apt install nginx -y",
+      "sudo systemctl enable nginx",
+      "sudo systemctl start nginx",
+    ]
+  }
 
+  connection {
+    host        = coalesce(self.public_ip, self.private_ip)
+    type        = "ssh"
+    user        = "ubuntu"
+    agent       = false
+    private_key = file("${path.module}/auth_key")
+    timeout     = "3"
+  }
 
-  # provisioner "remote-exec" {
-  #   inline = [
-  #     "sudo apt update -y",
-  #     "sudo apt install nginx -y",
-  #     "sudo systemctl enable nginx",
-  #     "sudo systemctl start nginx",
-  #   ]
-  # }
-
-  # connection {
-  #   host        = coalesce(self.public_ip, self.private_ip)
-  #   type        = "ssh"
-  #   user        = "ubuntu"
-  #   agent       = false
-  #   private_key = file("${path.module}/auth_key")
-  #   timeout     = "3"
-  # }
-
-  # lifecycle {
-  #   ignore_changes        = [ami]
-  #   create_before_destroy = true
-  # }
+  lifecycle {
+    ignore_changes        = [ami]
+    create_before_destroy = true
+  }
 }
-
-##############################################################################################################################
-###################################### Test Purpose #################################
-##############################################################################################################################
-
-
-
-##############################################################################################################################
-###################################### Test End #################################
-##############################################################################################################################
-
-
 
 # connection {
 #   type        = "ssh"
